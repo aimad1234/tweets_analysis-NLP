@@ -22,11 +22,7 @@ class StdOutListener(StreamListener):
     def on_error(self, status):
         print (status)
 
-<<<<<<< HEAD
 producer = KafkaProducer(bootstrap_servers='192.168.1.21')
-=======
-producer = KafkaProducer(bootstrap_servers='192.168.1.8:9092')
->>>>>>> fbc13b12802cabe219708c675b29c9fdfdcbfa5b
 l = StdOutListener()
 auth = OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
