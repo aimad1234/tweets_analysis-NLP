@@ -17,12 +17,12 @@ api_secret =  "ToiUNpdHUpr7q0ueRZ0CBvCkKmUBC9C9NjlzBcQ41b0oYx1Uon"
 class StdOutListener(StreamListener):
     def on_data(self, data):
         json_ = json.loads(data) 
-        producer.send("quickstart-events", json_["text"].encode('utf-8'))
+        producer.send("jattioui", json_["text"].encode('utf-8'))
         return True
     def on_error(self, status):
         print (status)
 
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers='192.168.1.21')
 l = StdOutListener()
 auth = OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
