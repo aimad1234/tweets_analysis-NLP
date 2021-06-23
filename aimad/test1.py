@@ -28,3 +28,6 @@ auth = OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
 stream = Stream(auth, l)
 stream.filter(track=["trump"],languages = ['fr'])
+
+
+print("mehdi")
