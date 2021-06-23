@@ -7,21 +7,18 @@ Created on Mon Jun 21 16:49:09 2021
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from kafka import KafkaProducer,KafkaConumer
+from kafka import KafkaProducer
 import json
 
-<<<<<<< HEAD
 
-access_token="1226574939119136769-Fdpz42OY4GrxOW7JzOFw3DLkF1WMdXv"
-access_token_secret = "2DlTX9RZkZ1YarSISmVfNnmVpboDkRjvrWQNTNBlmF8gw"
-api_key="mVTsmXLwbVztsmIqJmZ52vWAW"
-api_secret="ToiUNpdHUpr7q0ueRZ0CBvCkKmUBC9C9NjlzBcQ41b0oYx1Uon"
-=======
+
+
+
 access_token = "1226574939119136769-bd5aBC0QhzE7Qp2GOWULD8CGAyeisd"
 access_token_secret =  "8yt5u3d2JMPd8ZgBTy9MoA34I8GYnumQP3b9EZ7sExQtx"
 api_key =  "vvl6tAUpTVYG2p9XrrY3pGdS3"
 api_secret =  "kv3K5vj9DyTiYB7ELZfgxANrZOZIxlZ29KwKDok4rBo2WHkCyI"
->>>>>>> fbc13b12802cabe219708c675b29c9fdfdcbfa5b
+
 class StdOutListener(StreamListener):
     def on_data(self, data):
         json_ = json.loads(data) 
