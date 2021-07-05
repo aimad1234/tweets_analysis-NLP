@@ -22,12 +22,9 @@ class StdOutListener(StreamListener):
     def on_error(self, status):
         print (status)
 
-producer = KafkaProducer(bootstrap_servers='192.168.1.8:9092')
+producer = KafkaProducer(bootstrap_servers='LAPTOP-GL13JIPM:9092')
 l = StdOutListener()
 auth = OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
 stream = Stream(auth, l)
-stream.filter(track=["trump"],languages = ['fr'])
-
-
-print("mehdi")
+stream.filter(track=["trump"])
