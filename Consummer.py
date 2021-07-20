@@ -2,15 +2,13 @@
 """
 Created on Mon Jul  5 14:44:19 2021
 
-@author: aimad
 """
-#------------
+
 import time
 import inflect
 import re
 import string
 import nltk
-
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -19,8 +17,6 @@ from nltk.stem import WordNetLemmatizer # used for preprocessing
 from nltk.stem import PorterStemmer
 from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
-
-#------------
 from pyspark import SparkContext
 from operator import add
 from kafka import KafkaConsumer
@@ -29,6 +25,8 @@ from textblob import TextBlob
 from elasticsearch import Elasticsearch
 es = Elasticsearch()
 topic_name = 'quickstart-events'
+
+# ------------------- your consummer ------------------- -----
 consumer = KafkaConsumer(
     topic_name,
      bootstrap_servers=['LAPTOP-GL13JIPM'],
@@ -55,42 +53,40 @@ def text_uppercase(text):
     return text.upper()
 
 
-#----------supprimer les nombres existent dans le text
+#----------delete numbers from text ---------
 
 def remove_numbers(text):
     result = re.sub(r'\d+', '', text)
     return result
 
 
-# --------------- supprimer la ponctuation existent dans le text
+# --------------- delete ponctuation existent on text ----------
 
 def remove_punctuation(text):
     translator = str.maketrans('', '', string.punctuation)
     return text.translate(translator)
 
 
-# ------transformer en une liste de mots
+# ----------------convert list to words ---------------
 def tokenize(text):
     text = word_tokenize(text)
     return text
 
 
-#-------- supprimer les mots non significative---------
-
+#----------- delete words non significant ---------
 stop_words = set(stopwords.words('english'))
 def remove_stopwords(text):
     text = [i for i in text if not i in stop_words]
     return text
 
 
-# ---------------trouver les origines des mots
+# ---------------get the origins of words--------------
 lemmatizer = WordNetLemmatizer()
 def lemmatize(text):
     text = [lemmatizer.lemmatize(token) for token in text]
     return text
 
-# -------------remplacer tous les nombre en lettre
-
+# -------------remplace all number with word notation-----------
 def numbers_to_char(text):
     wordtoken = nltk.word_tokenize(text)
     p = inflect.engine()
@@ -104,7 +100,7 @@ def numbers_to_char(text):
     return new_Text
 
 
-#--------------------------Fin--------------------------------
+#--------------------------end analyse feedback using textBlob--------------------------------
 def analyze_sentiment(text):
     testimonial = TextBlob(text)
     return testimonial.sentiment.polarity
@@ -119,30 +115,33 @@ def get_sentiment_tuple(sent):
     
     
 counter=0 
-#--------------------------------------------------------
 def topHashtag(text):
     return text.split(" ")
 def getNouns(txt):
     blob = TextBlob(txt)
     print(blob.noun_phrases)
+
+#------------------------main --------------------------------
+
 for msg in consumer:
         #print(str(1));
         time.sleep(2)
       
         data= text_lowercase(msg.value)
         
-        #------heshtags
+        #------hashtages----------------------------------------------
         dict_data=json.loads(data)
         hashtags = re.findall("#[a-zA-Z0-9_]{1,50}", dict_data["text"])
        
-        #---sentimens
+        #---feedback-----------------------------------
         tweets=TextBlob(dict_data["text"])
         sentiments=analyze_sentiment(dict_data["text"])
-        #----------les meilleurs et les pirs tweets 
-        
+
+        #----------best and bad tweets ------------------
         frequencetweets= text_lowercase(dict_data["text"])
         frequencetweets=remove_urls(frequencetweets)
-        #--------mot plus frequents
+
+        #----------- frequency of words---------------
         filtreData= text_lowercase(dict_data["text"])
         filtredData=remove_urls(filtreData)
         filtredData=remove_punctuation(filtredData)
@@ -151,11 +150,9 @@ for msg in consumer:
         FrequencesMots=lemmatize(filtredData)
   
         print(FrequencesMots)
-
-        
         analysentimens,feedback=get_sentiment_tuple(sentiments)
        
-        
+        # ------------------- send all result to elastic search --------------------- 
         es.index(index="tweet_index" ,
                     doc_type="test_doc",
                     body={
@@ -169,6 +166,7 @@ for msg in consumer:
                             "FrequenceTweets":frequencetweets,
                     }
                 )
+        #-------------------------- optional ---------------------
         #time.sleep(5)
         #print(str(tweets))
         print('\n')

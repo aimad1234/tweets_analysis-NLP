@@ -2,7 +2,6 @@
 """
 Created on Tue Jul  6 18:35:43 2021
 
-@author: ASUS
 """
 
 import nltk
