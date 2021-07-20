@@ -17,5 +17,8 @@ Twitter  [Me](https://twitter.com/sin_moody)
 
 Reddit [Me](https://www.reddit.com/user/moody_sin)
 
+this dashboard is dynamic data changes during time ... 
 ![image](https://user-images.githubusercontent.com/63523451/126250676-ec595f4c-d707-4371-a288-257efe8336a1.png)
+
+somz zoom
 ![image](https://user-images.githubusercontent.com/63523451/126251670-59ed2416-396e-49c6-93fd-e62a727964fd.png)
