@@ -10,21 +10,35 @@ from tweepy import Stream
 from kafka import KafkaProducer
 import json
 
+
+#--------------- recuperer les tweets depuis api tweters avec tweepy et on levoie vers kafka-------
+
 access_token = "1226574939119136769-bd5aBC0QhzE7Qp2GOWULD8CGAyeisd"
 access_token_secret =  "8yt5u3d2JMPd8ZgBTy9MoA34I8GYnumQP3b9EZ7sExQtx"
 api_key =  "vvl6tAUpTVYG2p9XrrY3pGdS3"
 api_secret =  "kv3K5vj9DyTiYB7ELZfgxANrZOZIxlZ29KwKDok4rBo2WHkCyI"
+
 class StdOutListener(StreamListener):
     def on_data(self, data):
-        json_ = json.loads(data)
-        producer.send("quickstart-events", json_["text"].encode('utf-8'))
+        #json_ = json.loads(data) 
+        producer.send("quickstart-events",data.encode('utf-8'))
         return True
     def on_error(self, status):
         print (status)
 
-producer = KafkaProducer(bootstrap_servers='LAPTOP-GL13JIPM:9092')
+
+producer = KafkaProducer(bootstrap_servers='LAPTOP-GL13JIPM')
+
+
+
 l = StdOutListener()
 auth = OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
 stream = Stream(auth, l)
-stream.filter(track=["trump"])
+stream.filter(track=["covid19","vaccine"],languages = ['en']) 
+
+
+
+
+
+
