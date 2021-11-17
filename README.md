@@ -1,4 +1,4 @@
-## Streaming, real time processing and analyse feedback tweets of corona virus, and vaccins.
+## Streaming, real-time processing, and analyzing feedback tweets of coronavirus, and vaccines.
 
 ## using kafka and elasticsearchw with kibana and of course with python.
 
